@@ -49,9 +49,9 @@ const appendHelixArea = async (job, workItem, apiVersion) => {
 
     const markdownAreas = document.getElementsByClassName("markdown-body");
 
-    if (markdownAreas.length === 1) {
+    if (markdownAreas.length > 0) {
 
-        const markdownArea = markdownAreas[0]
+        const markdownArea = markdownAreas[markdownAreas.length - 1]
         const parentNode = markdownArea.parentNode
 
         if (!parentNode)
@@ -61,7 +61,9 @@ const appendHelixArea = async (job, workItem, apiVersion) => {
 
 
         const helixArea = createElement("div", { className: "f5 mb-4 mx-4" })
-        helixArea.innerHTML = `<div>Work item: ${workItem}</div> <div>Job: ${job}</div> <div><a href="${consoleUrl}">Console</a></div>`
+        helixArea.innerHTML = `<div>Job: <a href="${api}/jobs/${job}">${job}</a></div>
+        <div>Work item: <a href="${workItemsApi}">${workItem}</a></div>
+        <div><a href="${consoleUrl}">Console</a></div>`
 
         parentNode.insertBefore(helixArea, markdownArea.nextSibling);
 
@@ -91,8 +93,6 @@ const appendHelixArea = async (job, workItem, apiVersion) => {
 }
 
 const checks_main = () => {
-
-
 
     const re = /Work item ([^\/]*)\/([^ ]*) in/
     const reVersion = /https:\/\/helix.dot.net\/api\/([^\/]*)\//
