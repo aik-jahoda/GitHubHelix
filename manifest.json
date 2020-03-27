@@ -3,7 +3,7 @@
     "description": "Github Helix helper",
     "version": "2.0",
     "permissions": [
-      "activeTab", "*://*.github.com/*", "https://helix.dot.net/*"
+      "activeTab", "*://*.github.com/*", "https://helix.dot.net/*", "storage"
     ],
     "background": {
       "scripts": ["background.js"],
@@ -18,5 +18,9 @@
         "matches": ["https://*.github.com/*"],
         "js": ["content_script.js"]
       }
-    ]
+    ],
+    "options_ui": {
+      "page": "options.html",
+      "open_in_tab": false
+    }
   }

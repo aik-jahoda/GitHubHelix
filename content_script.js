@@ -1,6 +1,5 @@
 //use strict
 
-
 /**
  * @param {any} message
  * @returns {Promise<any>}
@@ -92,6 +91,26 @@ const appendHelixArea = async (job, workItem, apiVersion) => {
     }
 }
 
+const changeMergeBtn = async () => {
+
+    /**
+     * @param {ExtensionStorage} items
+     * @returns {Promise<ExtensionStorage>}
+     */
+    const storageGet = (items) => {
+        return new Promise((resolve) =>
+            chrome.storage.sync.get(items, (items) => resolve(/** @type {any} */(items))))
+    }
+
+    const items = await storageGet({ mergeBtnWarning: false })
+    if (items.mergeBtnWarning) {
+        const mergeBtn = document.querySelector("button.btn-group-merge");
+        if (mergeBtn) {
+            mergeBtn.className += " btn-danger"
+        }
+    }
+}
+
 const checks_main = () => {
 
     const re = /Work item ([^\/]*)\/([^ ]*) in/
@@ -127,6 +146,8 @@ const checks_main = () => {
     if (job && workItem && apiVersion) {
         appendHelixArea(job, workItem, apiVersion);
     }
+
+    changeMergeBtn()
 
 }
 
