@@ -1,3 +1,0 @@
-interface ExtensionStorage  {
-    mergeBtnWarning: boolean;
-}

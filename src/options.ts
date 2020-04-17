@@ -1,23 +1,9 @@
-
-/**
- * @param {Object} items
- */
-const storageSet = (items) => {
-    return new Promise((resolve) =>
-        chrome.storage.sync.set(items, resolve))
-}
+import { storageSet, storageGet } from "./utils";
 
 
-/**
- * @param {ExtensionStorage} items
- * @returns {Promise<ExtensionStorage>}
- */
-const storageGet = (items) => {
-    return new Promise((resolve) =>
-        chrome.storage.sync.get(items, (items)=> resolve(/** @type {any} */(items))))
-}
 
-var mergeBtnWarning = /** @type {HTMLInputElement | null} */ (document.getElementById('mergeBtnWarning'));
+
+var mergeBtnWarning = document.getElementById('mergeBtnWarning') as HTMLInputElement | null;
 
 // Saves options to chrome.storage
 async function save_options() {

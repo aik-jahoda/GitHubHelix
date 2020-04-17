@@ -3,12 +3,23 @@
   "version": "1.0.0",
   "description": "",
   "main": "background.js",
-  "dependencies": {},
+  "dependencies": {
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
   "devDependencies": {
     "@types/chrome": "0.0.102",
-    "typescript": "^3.8.3"
+    "@types/react": "^16.9.34",
+    "@types/react-dom": "^16.9.6",
+    "inline-source-map": "^0.6.2",
+    "ts-loader": "^7.0.0",
+    "typescript": "^3.8.3",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11"
   },
   "scripts": {
+    "watch": "webpack --watch",
+    "build": "webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
