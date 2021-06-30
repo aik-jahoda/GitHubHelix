@@ -16,12 +16,12 @@ const HelixInfo = (props: ApiDescriptionProps) => {
     const [jobDetail, setjobDetail] = useState<JobDetail>()
     useEffect(() => { fetchJobDetail(props.apiVersion, props.job).then(setjobDetail) }, [])
 
-    const [testResult, setTestResult] = useState<TestResult>()
+    const [testResult, setTestResult] = useState<Record<string, TestResult>>()
     const [isLoadingResult, setIsLoadingResult] = useState(false)
 
-    const loadTest = useCallback(async (resultsXml: string) => {
+    const loadTest = useCallback(async (resultsXml: string, fileName: string) => {
         setIsLoadingResult(true)
-        setTestResult(await loadTestResults(resultsXml))
+        setTestResult({...testResult, [fileName]: await loadTestResults(resultsXml)})
         setIsLoadingResult(false)
     }, [setTestResult, setIsLoadingResult])
 
@@ -29,7 +29,7 @@ const HelixInfo = (props: ApiDescriptionProps) => {
         <HelixDetail {...props} workItemDetail={workItemDetail} jobDetail={jobDetail} />
         <Files workItemDetail={workItemDetail} loadTest={loadTest} isLoadingResult={isLoadingResult} />
         <Job jobDetail={jobDetail} />
-        {testResult && <TestResult testResult={testResult} />}
+        {testResult && Object.entries(testResult).map(([key, value])=><TestResult key={key} testResult={value} name={key} />)}
     </div>
 }
 
@@ -52,14 +52,14 @@ const Job = (props: { jobDetail?: JobDetail }) => {
     </details>
 }
 
-const Files = (props: { workItemDetail?: WorkItemDetail, loadTest: (resultsXml: string) => void, isLoadingResult: boolean }) => {
+const Files = (props: { workItemDetail?: WorkItemDetail, loadTest: (resultsXml: string, fileName: string) => void, isLoadingResult: boolean }) => {
     return <details className="f5">
         <summary className="f6 text-normal text-uppercase text-gray-light">Files</summary>
         {props.workItemDetail?.Files.map((file, i) =>
             <div key={i}> <a href={file.Uri}>{file.FileName}</a>
-                {file.FileName === "testResults.xml" &&
+                {file.FileName.endsWith("testResults.xml") &&
                     <button disabled={props.isLoadingResult}
-                        onClick={() => props.loadTest(file.Uri)}>load tests</button>
+                        onClick={() => props.loadTest(file.Uri, file.FileName)}>load tests</button>
                 }
             </div>
         )}
@@ -67,9 +67,9 @@ const Files = (props: { workItemDetail?: WorkItemDetail, loadTest: (resultsXml: 
 }
 
 
-const TestResult = (props: { testResult?: TestResult }) =>
+const TestResult = (props: { testResult?: TestResult, name: string}) =>
     <details className="f5" >
-        <summary className="f6 text-normal text-uppercase text-gray-light">Tests results</summary>
+        <summary className="f6 text-normal text-uppercase text-gray-light">Tests results: {props.name}</summary>
         {props.testResult?.map((test, i) => (
             <div key={i} className="pl-2" >
                 <details>

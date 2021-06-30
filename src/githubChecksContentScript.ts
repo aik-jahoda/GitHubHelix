@@ -2,8 +2,8 @@ import { attachReact } from "./HelixInfo"
 
 const main = () => {
 
-    const regexes = [
-        /Failure log: https:\/\/helix.dot.net\/api\/(?<version>\d{4}-\d\d-\d\d)\/jobs\/(?<job>[^\/]*)\/workitems\/(?<workItem>[^\/]*)\/console/,
+    const regexes = [        
+        /https:\/\/helix.dot.net\/api\/(?<version>\d{4}-\d\d-\d\d)\/jobs\/(?<job>[^\/]*)\/workitems\/(?<workItem>[^\/]*)\/console/,
         /Work item ([^\/]*)\/([^ ]*) in/
     ]
     const x = document.getElementsByTagName("pre")
